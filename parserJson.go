@@ -7,13 +7,22 @@ import (
 )
 
 type parserJson struct {
-	getters
 	file    []byte
 	storage map[string]interface{}
 }
-
-var storageJson = make(map[string]parserJson)
-
+func newJson(key ...string) *parserJson {
+	file, e := ioutil.ReadFile(cfg.ConfigStoragePrefix + key[0] + ".json")
+	if (e != nil) {
+		panic(e)
+	}
+	var jsontype map[string]interface{}
+	json.Unmarshal(file, &jsontype)
+	data  := &parserJson{
+		file: file,
+		storage: jsontype,
+	}
+	return data
+}
 func (p *parserJson) Get(key string) (string, error) {
 	if value, err := p.storage[key]; err {
 		return value.(string), nil
@@ -31,23 +40,25 @@ func (p *parserJson) AssignTo(data interface{}) (error) {
 	}
 	return nil
 }
-func (p *parserJson) getStorage(name_storage string) (ConfigInterface) {
-	if storage, err := storageJson[name_storage]; err {
-		return &storage
-	} else {
-		file, e := ioutil.ReadFile(cfg.ConfigStoragePrefix + name_storage + ".json")
-		if (e != nil) {
-			panic(e)
-		}
-		var jsontype map[string]interface{}
-		json.Unmarshal(file, &jsontype)
-		_parserJson := parserJson{
-			file: file,
-			storage: jsontype,
-		}
-		storageJson[name_storage] = _parserJson
+func (p *parserJson) GetString(key string) (string) {
+	return getString(p,key)
+}
+func (p *parserJson) GetDefault(key,def string) (string) {
+	return getDefault(p,key,def)
+}
 
-		return &_parserJson
-	}
+func (p *parserJson) GetBool(key string) (bool,error) {
+	return getBool(p,key)
+}
 
+func (p *parserJson) GetInt64(key string, property ...int) (int64,error) {
+	return getInt64(p,key,property...)
+}
+
+func (p *parserJson) GetFloat64(key string) (float64,error) {
+	return getFloat64(p,key)
+}
+
+func (p *parserJson) GetUint64(key string, property ...int) (uint64,error) {
+	return getUint64(p,key,property...)
 }
