@@ -32,6 +32,9 @@ func GetStorage(key ...string) (ConfigInterface) {
 			}
 			configDataStorage[name_storage]=&dataStorage{
 				configObject:newJson(key...)}
+		case "CONSUL":
+			configDataStorage[name_storage]=&dataStorage{
+				configObject:newConsul(key...)}
 
 		default:
 			panic(errors.New("Not support CONFIG_TYPE [" +cfg.ConfigType+"]" ))

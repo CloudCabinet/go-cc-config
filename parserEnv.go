@@ -38,6 +38,14 @@ func (p *parserEnv) AssignTo(data interface{}) (error) {
 }
 
 
+func (p *parserEnv) GetDB() (*dbConfig) {
+	db:=new(dbConfig)
+	err := env.Parse(db)
+	if err != nil {
+		panic(err)
+	}
+	return db
+}
 func (p *parserEnv) GetString(key string) (string) {
 	return getString(p,key)
 }

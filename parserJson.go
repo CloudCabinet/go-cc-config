@@ -7,7 +7,7 @@ import (
 )
 
 type parserJson struct {
-	file    []byte
+	storageByte    []byte
 	storage map[string]interface{}
 }
 func newJson(key ...string) *parserJson {
@@ -18,7 +18,7 @@ func newJson(key ...string) *parserJson {
 	var jsontype map[string]interface{}
 	json.Unmarshal(file, &jsontype)
 	data  := &parserJson{
-		file: file,
+		storageByte: file,
 		storage: jsontype,
 	}
 	return data
@@ -34,11 +34,19 @@ func (p *parserJson) GetAll() (map[string]interface{}, error) {
 	return p.storage, nil
 }
 func (p *parserJson) AssignTo(data interface{}) (error) {
-	err := json.Unmarshal(p.file, data)
+	err := json.Unmarshal(p.storageByte, data)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+func (p *parserJson) GetDB() (*dbConfig) {
+	db:=new(dbConfig)
+	err := json.Unmarshal(p.storageByte, db)
+	if err != nil {
+		panic(err)
+	}
+	return db
 }
 func (p *parserJson) GetString(key string) (string) {
 	return getString(p,key)
