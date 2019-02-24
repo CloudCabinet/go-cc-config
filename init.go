@@ -31,6 +31,7 @@ type ConfigInterface interface {
 	GetFloat64(key string) (float64,error)
 	GetUint64(key string, property ...int) (uint64,error)
 	GetDefault(key,def string) (string)
+	GetInterface(key string) (interface{})
 	AssignTo(data interface{}) (error)
 }
 type dataStorage struct {

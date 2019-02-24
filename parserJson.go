@@ -70,3 +70,10 @@ func (p *parserJson) GetFloat64(key string) (float64,error) {
 func (p *parserJson) GetUint64(key string, property ...int) (uint64,error) {
 	return getUint64(p,key,property...)
 }
+func (p *parserJson) GetInterface(key string) (interface{}) {
+	if value, err := p.storage[key]; err {
+		return value
+	} else {
+		panic(errors.New("Not found config key=[" + key + "]"))
+	}
+}

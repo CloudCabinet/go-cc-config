@@ -68,3 +68,6 @@ func (p *parserEnv) GetFloat64(key string) (float64,error) {
 func (p *parserEnv) GetUint64(key string, property ...int) (uint64,error) {
 	return getUint64(p,key,property...)
 }
+func (p *parserEnv) GetInterface(key string) (interface{}) {
+	panic(errors.New("This metod not support ENV"))
+}
